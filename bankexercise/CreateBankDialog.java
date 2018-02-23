@@ -111,7 +111,7 @@ public class CreateBankDialog extends JFrame {
 
 						int accountId = table.size();
 						
-						while(!table.containsKey(accountId)) {
+						while(table.containsKey(accountId)) {
 							accountId++;
 						}
 						
