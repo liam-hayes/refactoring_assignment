@@ -509,25 +509,29 @@ public class BankApplication extends JFrame {
 				}
 				else {
 					String accNum = JOptionPane.showInputDialog("Account number to withdraw from: ");
-					String toWithdraw = JOptionPane.showInputDialog("Account found, Enter Amount to Withdraw: ");
+					String toWithdrawString = JOptionPane.showInputDialog("Account found, Enter Amount to Withdraw: ");
+					Double toWithdraw = Double.parseDouble(toWithdrawString);
+					if (toWithdraw <= 0 ) {
+						JOptionPane.showMessageDialog(null, "Please enter a positive amount to withdraw");
+					}
 	
 					for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
 	
 						if (accNum.equals(entry.getValue().getAccountNumber().trim())) {
 	
 							if (entry.getValue().getAccountType().trim().equals("Current")) {
-								if (Double.parseDouble(toWithdraw) > entry.getValue().getBalance()
+								if (toWithdraw > entry.getValue().getBalance()
 										+ entry.getValue().getOverdraft())
 									JOptionPane.showMessageDialog(null, "Transaction exceeds overdraft limit");
 								else {
 									entry.getValue()
-											.setBalance(entry.getValue().getBalance() - Double.parseDouble(toWithdraw));
+											.setBalance(entry.getValue().getBalance() - toWithdraw);
 									displayDetails(entry.getKey());
 								}
 							} else if (entry.getValue().getAccountType().trim().equals("Deposit")) {
-								if (Double.parseDouble(toWithdraw) <= entry.getValue().getBalance()) {
+								if (toWithdraw <= entry.getValue().getBalance()) {
 									entry.getValue()
-											.setBalance(entry.getValue().getBalance() - Double.parseDouble(toWithdraw));
+											.setBalance(entry.getValue().getBalance() - toWithdraw);
 									displayDetails(entry.getKey());
 								} else
 									JOptionPane.showMessageDialog(null, "Insufficient funds.");
