@@ -468,13 +468,10 @@ public class BankApplication extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String accNum = JOptionPane.showInputDialog("Account number to withdraw from: ");
 				String toWithdraw = JOptionPane.showInputDialog("Account found, Enter Amount to Withdraw: ");
-				boolean found;
 
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
 
 					if (accNum.equals(entry.getValue().getAccountNumber().trim())) {
-
-						found = true;
 
 						if (entry.getValue().getAccountType().trim().equals("Current")) {
 							if (Double.parseDouble(toWithdraw) > entry.getValue().getBalance()
@@ -629,15 +626,8 @@ public class BankApplication extends JFrame {
 						record.getOverdraft());
 
 				Integer key = Integer.valueOf(ba.getAccountNumber().trim());
-
-				int hash = (key % TABLE_SIZE);
-
-				while (table.containsKey(hash)) {
-
-					hash = hash + 1;
-				}
-
-				table.put(hash, ba);
+				
+				put(key, ba);
 
 			} // end while
 		} // end try
@@ -653,8 +643,6 @@ public class BankApplication extends JFrame {
 
 	public static void saveToFile() {
 		RandomAccessBankAccount record = new RandomAccessBankAccount();
-
-		Scanner input = new Scanner(System.in);
 
 		for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
 			record.setAccountID(entry.getValue().getAccountID());
@@ -697,7 +685,7 @@ public class BankApplication extends JFrame {
 		closeFile();
 	}
 
-	public void put(int key, BankAccount value) {
+	public static void put(int key, BankAccount value) {
 		int hash = (key % TABLE_SIZE);
 
 		while (table.containsKey(key)) {
